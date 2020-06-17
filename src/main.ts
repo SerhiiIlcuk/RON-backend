@@ -1,8 +1,11 @@
+import { UserModule } from './user/user.module';
+import { ArticleModule } from './article/article.module';
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { warn } from 'console';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { join } from 'path';
+import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as bodyParser from 'body-parser';
 
@@ -11,28 +14,39 @@ async function bootstrap() {
     AppModule,
   );
 
+  // ╦ ╦╔═╗╔═╗  ╔═╗╦  ╔═╗╔╗ ╔═╗╦    ╔═╗╦╔═╗╔═╗╔═╗
+  // ║ ║╚═╗║╣   ║ ╦║  ║ ║╠╩╗╠═╣║    ╠═╝║╠═╝║╣ ╚═╗
+  // ╚═╝╚═╝╚═╝  ╚═╝╩═╝╚═╝╚═╝╩ ╩╩═╝  ╩  ╩╩  ╚═╝╚═╝
   app.useGlobalPipes(new ValidationPipe({
-    validationError: { target: false, value: false }
+    validationError: { target: false, value: false },
   }));
 
-  app.use(bodyParser.json({limit: "100mb"}));
-  app.use(bodyParser.urlencoded({limit: "100mb", extended: false}));
+  app.use(bodyParser.json({limit: '100mb'}));
+  app.use(bodyParser.urlencoded({limit: '100mb', extended: false}));
   app.enableCors();
 
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('hbs');
-
+  // ╔═╗╦ ╦╔═╗╔═╗╔═╗╔═╗╦═╗
+  // ╚═╗║║║╠═╣║ ╦║ ╦║╣ ╠╦╝
+  // ╚═╝╚╩╝╩ ╩╚═╝╚═╝╚═╝╩╚═
   const options = new DocumentBuilder()
-    .setTitle('RON App')
-    .setDescription('The RON API description')
+    .setTitle('API')
+    .setDescription('API description')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addTag('API')
     .build();
+  const document = SwaggerModule.createDocument(app, options, {
+    include: [
+      UserModule,
+      ArticleModule,
+  ],
+  });
+  SwaggerModule.setup('api', app, document);
 
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('docs', app, document);
-
-  await app.listen(5000);
+  // ╔╦╗╔═╗╔═╗╦╔╗╔╔═╗  ╔═╗╔╗╔╔╦╗  ╦  ╦╔═╗╔╦╗╔═╗╔╗╔  ╔╦╗╔═╗  ╔═╗╔═╗╦═╗╔╦╗
+  // ║║║╣ ╠╣ ║║║║║╣    ╠═╣║║║ ║║  ║  ║╚═╗ ║ ║╣ ║║║   ║ ║ ║  ╠═╝║ ║╠╦╝ ║
+  // ═╩╝╚═╝╚  ╩╝╚╝╚═╝  ╩ ╩╝╚╝═╩╝  ╩═╝╩╚═╝ ╩ ╚═╝╝╚╝   ╩ ╚═╝  ╩  ╚═╝╩╚═ ╩
+  const PORT = process.env.PORT || 5000;
+  await app.listen(PORT);
+  warn(`APP IS LISTENING TO PORT ${PORT}`);
 }
 bootstrap();

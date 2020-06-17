@@ -1,75 +1,56 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+<div align="center">
+  <h3>nestjs-mongoose-jwt-auth-roles-and-permission</h3>
+  <hr>
+</div>
 
-[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
-[travis-url]: https://travis-ci.org/nestjs/nest
-[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
-[linux-url]: https://travis-ci.org/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
-<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
-<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
-  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# Getting started
 
 ## Installation
 
-```bash
-$ npm install
-```
+Clone the repository
 
-## Running the app
+    git clone https://github.com/SerhiiIlcuk/RON-backend.git
 
-```bash
-# development
-$ npm run start
+Switch to the repo folder
 
-# watch mode
-$ npm run start:dev
+    cd Ron-backend
+    
+Install dependencies
+    
+    npm install
 
-# production mode
-$ npm run start:prod
-```
+Create a .env file and write it as follows
 
-## Test
+    MONGO_URI='mongodb://localhost/YOURMONGODBNAME'
+    JWT_SECRET='YOURJWTSECRETCHANGEIT'
+    ENCRYPT_JWT_SECRET='YOURJWTENCRIPTINGPASSCHANGEIT'
+    JWT_EXPIRATION=30m
+ 
+----------
 
-```bash
-# unit tests
-$ npm run test
+## Database
 
-# e2e tests
-$ npm run test:e2e
+The example codebase uses [Mongoose](https://mongoosejs.com/).
 
-# test coverage
-$ npm run test:cov
-```
+----------
 
-## Support
+## NPM scripts
+- `npm run start:watch` - Start application in watch mode
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+----------
+# Authentication
+ 
+This applications uses JSON Web Token (JWT) to handle authentication.
+This app uses <strong>refresh-Token</strong> mechanism to refresh jsonwebtoken after 30 minutes.
 
-## Stay in touch
+----------
+ 
+# Swagger API docs
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Visit http://127.0.0.1:5000/api in your browser
 
-## License
+This example repo uses the NestJS swagger module for API documentation. [NestJS Swagger](https://github.com/nestjs/swagger) - [www.swagger.io](https://swagger.io/)
 
-  Nest is [MIT licensed](LICENSE).
+## Authors
+
+ **Serhii Ilchuk**
