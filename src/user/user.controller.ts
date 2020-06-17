@@ -22,7 +22,6 @@ import {
 } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { UserTypeGuard } from 'src/auth/guards/user-type.guard';
-import { log } from 'console';
 
 @ApiUseTags('User')
 @Controller('user')

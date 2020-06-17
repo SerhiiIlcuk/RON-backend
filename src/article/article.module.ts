@@ -10,6 +10,6 @@ import { ArticleSchema } from './schemas/article.schema';
     MongooseModule.forFeature([{name: 'Article', schema: ArticleSchema}]),
   ],
   controllers: [ArticleController],
-  providers: [ArticleService]
+  providers: [ArticleService],
 })
 export class ArticleModule {}
