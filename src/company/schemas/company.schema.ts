@@ -2,6 +2,12 @@ import * as mongoose from 'mongoose';
 import * as validator from 'validator';
 
 export const CompanySchema = new mongoose.Schema ({
+  logoImg: {
+    type: String,
+  },
+  splashImg: {
+    type: String,
+  },
   name: {
     type: String,
     required: [true, 'NAME_IS_BLANK'],

@@ -166,12 +166,11 @@ export class UserService {
      * @description used to update user profile
      */
     async updateUser(userId: string, updateUserDto: UpdateUserDto) {
-        log(userId);
         const user = await this.userModel.findById(userId);
         if (!user) {
             throw new BadRequestException('Bad request');
         }
-        log(user);
+
         const updatedUser = Object.assign(user, updateUserDto);
         try {
             await this.userModel.updateOne({ _id: userId }, updatedUser);

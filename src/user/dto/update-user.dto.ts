@@ -37,6 +37,15 @@ export class UpdateUserDto {
   @IsEmail()
   readonly email: string;
 
+  // logo path
+  @ApiModelProperty({
+    example: 'uploads/21324.png',
+    description: 'image path on server file system',
+    format: 'string',
+  })
+  @IsString()
+  readonly logoImg: string;
+
   // LinkedIn Url
   @ApiModelProperty({
     example: 'https://linkedin.com/serhii',
@@ -46,4 +55,44 @@ export class UpdateUserDto {
   @IsString()
   @IsUrl()
   readonly linkedInUrl: string;
+
+  // Twitter Url
+  @ApiModelProperty({
+    example: 'https://twitter.com/serhii',
+    description: 'The url of Twitter profile',
+    format: 'url',
+  })
+  @IsString()
+  @IsUrl()
+  readonly twitterUrl: string;
+
+  // Dribble Url
+  @ApiModelProperty({
+    example: 'https://dribbble.com/serhii',
+    description: 'The url of Dribbble profile',
+    format: 'url',
+  })
+  @IsString()
+  @IsUrl()
+  readonly dribbleUrl: string;
+
+  // Github Url
+  @ApiModelProperty({
+    example: 'https://github.com/serhii',
+    description: 'The url of Github profile',
+    format: 'url',
+  })
+  @IsString()
+  @IsUrl()
+  readonly githubUrl: string;
+
+  // Kaggle Url
+  @ApiModelProperty({
+    example: 'https://kaggle.com/serhii',
+    description: 'The url of Kaggle profile',
+    format: 'url',
+  })
+  @IsString()
+  @IsUrl()
+  readonly kaggleUrl: string;
 }

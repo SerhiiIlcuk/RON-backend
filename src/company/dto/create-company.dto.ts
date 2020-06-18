@@ -13,6 +13,24 @@ export class CreateCompanyDto {
   @IsString()
   readonly name: string;
 
+  // logo path
+  @ApiModelProperty({
+    example: 'uploads/21324.png',
+    description: 'image path on server file system',
+    format: 'string',
+  })
+  @IsString()
+  readonly logoImg: string;
+
+  // splash image path
+  @ApiModelProperty({
+    example: 'uploads/3421324.png',
+    description: 'image path on server file system',
+    format: 'string',
+  })
+  @IsString()
+  readonly splashImg: string;
+
   // Birth Year
   @ApiModelProperty({
     example: '2020',

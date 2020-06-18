@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { AppService } from './app.service';
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
@@ -8,5 +9,11 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @ApiExcludeEndpoint()
+  @Get('uploads/:fileId')
+  async serveImage(@Param('fileId') fileId, @Res() res): Promise<any> {
+    res.sendFile(fileId, {root: 'uploads'});
   }
 }
