@@ -20,7 +20,7 @@ export class CompanyService {
     await this.isNameUnique(company.name);
     const employee = {
       user: userId,
-      roles: ['user', 'profile', 'news'],
+      roles: ['user', 'profile', 'news', 'job'],
     };
     company.employees.push(employee);
     await company.save();

@@ -16,6 +16,8 @@ import { RefreshAccessTokenDto } from './dto/refresh-access-token.dto';
 import { ForgotPassword } from './interfaces/forgot-password.interface';
 import { User } from './interfaces/user.interface';
 import {log} from 'console';
+import { Company } from '../company/interfaces/company.interface';
+import {CANDIDATE, EMPLOYEE} from '../common/constants';
 
 @Injectable()
 export class UserService {
@@ -26,6 +28,7 @@ export class UserService {
 
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
+        @InjectModel('Company') private readonly companyModel: Model<Company>,
         @InjectModel('ForgotPassword') private readonly forgotPasswordModel: Model<ForgotPassword>,
         private readonly authService: AuthService,
         ) {}
@@ -69,11 +72,19 @@ export class UserService {
         this.isUserBlocked(user);
         await this.checkPassword(loginUserDto.password, user);
         await this.passwordsAreMatch(user);
+
+        let company;
+        if (user.userType === EMPLOYEE) {
+            company = await this.companyModel.findOne({'employees.user': user._id, 'verified': true});
+        }
+
         return {
+            id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
             userType: user.userType,
+            company,
             accessToken: await this.authService.createAccessToken(user._id),
             refreshToken: await this.authService.createRefreshToken(req, user._id),
         };

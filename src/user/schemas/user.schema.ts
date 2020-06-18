@@ -28,7 +28,7 @@ export const UserSchema = new mongoose.Schema ({
     },
     userType: {
         type: String,
-        enum: ['candidate', 'employer', 'admin'],
+        enum: ['candidate', 'employee', 'admin'],
         default: 'candidate',
     },
     resumeLink: {
