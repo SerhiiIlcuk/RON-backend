@@ -9,6 +9,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as bodyParser from 'body-parser';
 import { CompanyModule } from './company/company.module';
+import { JobModule } from './job/job.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
@@ -39,6 +40,7 @@ async function bootstrap() {
     include: [
       UserModule,
       CompanyModule,
+      JobModule,
       ArticleModule,
   ],
   });
