@@ -7,6 +7,7 @@ import { ApiConsumes, ApiBearerAuth, ApiImplicitHeader, ApiOkResponse, ApiOperat
 import { ImageUploadDto } from './dto/image-upload.dto';
 import { FileUploadDto } from './dto/file-upload.dto';
 import { AuthGuard } from '@nestjs/passport';
+import {log} from 'console';
 
 @Controller('file-upload')
 export class FileUploadController {

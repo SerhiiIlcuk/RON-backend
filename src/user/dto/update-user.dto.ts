@@ -46,6 +46,15 @@ export class UpdateUserDto {
   @IsString()
   readonly logoImg: string;
 
+  // resume path
+  @ApiModelProperty({
+    example: 'uploads/21324.pdf',
+    description: 'resume path on server file system',
+    format: 'string',
+  })
+  @IsString()
+  readonly resumeLink: string;
+
   // LinkedIn Url
   @ApiModelProperty({
     example: 'https://linkedin.com/serhii',
