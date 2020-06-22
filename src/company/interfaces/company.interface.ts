@@ -1,8 +1,6 @@
 import { Document, Types } from 'mongoose';
 
 export interface Company extends Document {
-    company: import("F:/freelancer/2020.06.12/git/Ron-backend/src/company/dto/company-employee.dto").EmployeeDto[];
-    company: import("F:/freelancer/2020.06.12/git/Ron-backend/src/company/dto/company-employee.dto").EmployeeDto[];
   name: string;
   birthYear: string;
   localEmployees: number;
@@ -16,6 +14,9 @@ export interface Company extends Document {
   facebookUrl: string;
   instagramUrl: string;
   twitterUrl: string;
+  companyTypes: [
+    Types.ObjectId,
+  ];
   employees: [{
     user: Types.ObjectId,
     roles: string[],

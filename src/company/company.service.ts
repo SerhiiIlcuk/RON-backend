@@ -8,12 +8,14 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 import { log } from 'console';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { DeleteEmployeeDto } from './dto/delete-employee.dto';
+import { CompanyType } from './interfaces/company-type.interface';
 
 @Injectable()
 export class CompanyService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
     @InjectModel('Company') private readonly companyModel: Model<Company>,
+    @InjectModel('CompanyType') private readonly companyTypeModel: Model<CompanyType>,
   ) {
   }
 
@@ -122,6 +124,17 @@ export class CompanyService {
     }
     await company.save();
     return this.companyModel.findById(companyId).populate('employees.user');
+  }
+
+  /**
+   * @description get all companies verified
+   */
+  async getAllCompanyTypes(): Promise<CompanyType[]> {
+    try {
+      return await this.companyTypeModel.find({});
+    } catch (e) {
+      throw new InternalServerErrorException('Server Database Operation error');
+    }
   }
 
   private async isNameUnique(name: string) {

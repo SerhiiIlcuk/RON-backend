@@ -63,6 +63,12 @@ export const CompanySchema = new mongoose.Schema ({
       },
     },
   ],
+  companyTypes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'CompanyType',
+    },
+  ],
   verified: {
     type: Boolean,
     default: false,

@@ -96,4 +96,12 @@ export class CompanyController {
   async deleteEmployee(@Body() deleteEmployeeDto: DeleteEmployeeDto) {
     return await this.companyService.deleteEmployee(deleteEmployeeDto);
   }
+
+  @Get('company-types')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ title: 'Get all company types' })
+  @ApiOkResponse({})
+  async getAllCompanyTypes() {
+    return await this.companyService.getAllCompanyTypes();
+  }
 }

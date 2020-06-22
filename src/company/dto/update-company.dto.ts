@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsNumber, IsUrl } from 'class-validator';
+import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsNumber, IsUrl, IsArray } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class UpdateCompanyDto {
@@ -152,4 +152,14 @@ export class UpdateCompanyDto {
   @IsString()
   @IsUrl()
   readonly twitterUrl: string;
+
+  // Types of the Company
+  @ApiModelProperty({
+    example: '["121212", "34343434"]',
+    description: 'types of the company',
+    format: 'array',
+  })
+  @IsArray()
+  @IsNotEmpty()
+  readonly companyTypes: string[];
 }
