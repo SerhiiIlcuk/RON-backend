@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsNumber, IsUrl } from 'class-validator';
+import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsNumber, IsUrl, IsOptional } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateCompanyDto {
@@ -19,6 +19,7 @@ export class CreateCompanyDto {
     description: 'image path on server file system',
     format: 'string',
   })
+  @IsOptional()
   @IsString()
   readonly logoImg: string;
 
@@ -28,6 +29,7 @@ export class CreateCompanyDto {
     description: 'image path on server file system',
     format: 'string',
   })
+  @IsOptional()
   @IsString()
   readonly splashImg: string;
 

@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsUrl } from 'class-validator';
+import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsUrl, IsOptional } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto {
@@ -44,6 +44,7 @@ export class UpdateUserDto {
     format: 'string',
   })
   @IsString()
+  @IsOptional()
   readonly logoImg: string;
 
   // resume path
