@@ -31,6 +31,14 @@ export class CompanyController {
     return await this.companyService.create(createCompanyDto, user.id);
   }
 
+  @Get('')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ title: 'Get all companies verified' })
+  @ApiOkResponse({})
+  async getAllCompanies() {
+    return await this.companyService.getAllCompanies();
+  }
+
   @Put('update/:id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ title: 'Update company' })
@@ -46,7 +54,7 @@ export class CompanyController {
     return await this.companyService.updateCompany(updateCompanyDto, params.id);
   }
 
-  @Get(':id')
+  @Get('detail/:id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ title: 'Get company details' })
   @ApiImplicitParam({ name: 'id', description: 'id of company' })

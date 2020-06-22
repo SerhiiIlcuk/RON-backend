@@ -33,6 +33,18 @@ export class CompanyService {
   }
 
   /**
+   * @description get all companies verified
+   */
+  async getAllCompanies(): Promise<Company[]> {
+    const companies = await this.companyModel.find({ verified: true });
+
+    if (!companies) {
+      throw new NotFoundException('Companies Not Found');
+    }
+    return companies;
+  }
+
+  /**
    * @description create company
    */
   async updateCompany(updateCompanyDto: UpdateCompanyDto, companyId: string): Promise<Company> {
