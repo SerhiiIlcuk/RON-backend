@@ -18,6 +18,9 @@ import { User } from './interfaces/user.interface';
 import {log} from 'console';
 import { Company } from '../company/interfaces/company.interface';
 import {CANDIDATE, EMPLOYEE} from '../common/constants';
+import { JobLocation } from '../common/interfaces/job-location.interface';
+import { Profession } from '../common/interfaces/profession.interface';
+import { Skill } from '../common/interfaces/skill.interface';
 
 @Injectable()
 export class UserService {
@@ -30,6 +33,9 @@ export class UserService {
         @InjectModel('User') private readonly userModel: Model<User>,
         @InjectModel('Company') private readonly companyModel: Model<Company>,
         @InjectModel('ForgotPassword') private readonly forgotPasswordModel: Model<ForgotPassword>,
+        @InjectModel('Profession') private readonly professionModel: Model<Profession>,
+        @InjectModel('JobLocation') private readonly jobLocationModel: Model<JobLocation>,
+        @InjectModel('Skill') private readonly skillModel: Model<Skill>,
         private readonly authService: AuthService,
         ) {}
 

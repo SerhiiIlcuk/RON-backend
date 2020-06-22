@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsUrl, IsOptional } from 'class-validator';
+import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsUrl, IsOptional, IsArray } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto {
@@ -55,6 +55,16 @@ export class UpdateUserDto {
   })
   @IsString()
   readonly resumeLink: string;
+
+  // resume path
+  @ApiModelProperty({
+    example: '[0, 2]',
+    description: 'array of index of reasons that why you are here',
+    format: 'number array',
+  })
+  @IsNotEmpty()
+  @IsArray()
+  readonly whyHere: string[];
 
   // LinkedIn Url
   @ApiModelProperty({

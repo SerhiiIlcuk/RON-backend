@@ -1,7 +1,6 @@
 import { Document } from 'mongoose';
 
 export interface User extends Document {
-    // fullName: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -22,6 +21,4 @@ export interface User extends Document {
     verificationExpires: Date;
     loginAttempts?: number;
     blockExpires?: Date;
-    // bankAccountNumber?: string;
-    // bankAccountName?: string;
 }
