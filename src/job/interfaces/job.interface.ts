@@ -8,6 +8,7 @@ export interface Job extends Document {
   howToApply: string;
   published: boolean;
   poster: Types.ObjectId;
+  company: Types.ObjectId;
   views: [Types.ObjectId];
   applies: [
     {

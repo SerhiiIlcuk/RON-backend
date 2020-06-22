@@ -5,22 +5,26 @@ import { Model, Schema, Types } from 'mongoose';
 import { CreateJobDto } from './dto/create-job.dto';
 import {log} from 'console';
 import { UpdateJobPublishReNewDto } from './dto/update-job-publish-renew.dto';
-import isEmpty = require('validator/lib/isEmpty');
 import { UpdateJobDto } from './dto/update-job.dto';
+import { Company } from '../company/interfaces/company.interface';
 
 @Injectable()
 export class JobService {
   constructor(
     @InjectModel('Job') private readonly jobModel: Model<Job>,
+    @InjectModel('Company') private readonly companyModel: Model<Company>,
   ) {}
 
   /**
    * @description create job
    */
   async create(createJobDto: CreateJobDto, userId: Types.ObjectId): Promise<Job> {
-    const job = new this.jobModel(createJobDto);
-    job.poster = userId;
     try {
+      const job = new this.jobModel(createJobDto);
+      const company = await this.companyModel.findOne({'employees.user': userId, 'verified': true});
+      job.poster = userId;
+      job.company = company._id;
+
       await job.save();
       return job;
     } catch (e) {
@@ -45,12 +49,26 @@ export class JobService {
   }
 
   /**
+   * @description get all jobs
+   */
+  async getAllJobs(): Promise<Job[]> {
+    try {
+      let jobs: any;
+      jobs = await this.jobModel.find({ published: true }).populate('company');
+      return jobs;
+    } catch (e) {
+      throw new InternalServerErrorException('Server database operation error');
+    }
+  }
+
+  /**
    * @description get job by id
    * @param id
    */
   async getJob(id: string): Promise<Job> {
     try {
-      const job = await this.jobModel.findById(Types.ObjectId(id));
+      let job: any;
+      job = await this.jobModel.findById(Types.ObjectId(id));
       return job;
     } catch (e) {
       throw new InternalServerErrorException('Server database operation error');
@@ -63,7 +81,8 @@ export class JobService {
    */
   async getEmployeeJobs(userId: Types.ObjectId) {
     try {
-      const jobs = await this.jobModel.find({poster: userId});
+      let jobs: any;
+      jobs = await this.jobModel.find({ poster: userId });
       return jobs;
     } catch (e) {
       throw new InternalServerErrorException('Server database operation error');

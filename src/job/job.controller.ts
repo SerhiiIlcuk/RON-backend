@@ -58,6 +58,14 @@ export class JobController {
     return await this.jobService.getJob(params.id);
   }
 
+  @Get('')
+  @ApiOperation({ title: 'Get job by id' })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({})
+  async getAllJobs() {
+    return await this.jobService.getAllJobs();
+  }
+
   @Get('employee')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
