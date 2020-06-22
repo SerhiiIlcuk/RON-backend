@@ -1,18 +1,21 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import {Company} from './interfaces/company.interface';
+import { Company } from './interfaces/company.interface';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { User } from '../user/interfaces/user.interface';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import {log} from 'console';
+import { log } from 'console';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { DeleteEmployeeDto } from './dto/delete-employee.dto';
 
 @Injectable()
 export class CompanyService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
     @InjectModel('Company') private readonly companyModel: Model<Company>,
-  ) {}
+  ) {
+  }
 
   /**
    * @description create company
@@ -40,7 +43,7 @@ export class CompanyService {
     const updatedCompany = Object.assign(company, updateCompanyDto);
 
     try {
-      await this.companyModel.updateOne({_id: companyId}, updatedCompany);
+      await this.companyModel.updateOne({ _id: companyId }, updatedCompany);
       return updatedCompany;
     } catch (e) {
       log(e);
@@ -54,7 +57,7 @@ export class CompanyService {
    * @return company
    */
   async get(companyId: string): Promise<Company> {
-    const company = await this.companyModel.findById(companyId);
+    const company = await this.companyModel.findById(companyId).populate('employees.user');
 
     if (!company) {
       throw new NotFoundException('Company Not Found');
@@ -62,8 +65,55 @@ export class CompanyService {
     return company;
   }
 
+  /**
+   * @param updateEmployeeDto
+   * @description get company by companyId
+   * @return company
+   */
+  async updateEmployee(updateEmployeeDto: UpdateEmployeeDto): Promise<Company> {
+    const companyId = Types.ObjectId(updateEmployeeDto.id);
+    const company = await this.companyModel.findById(companyId);
+    const userId = Types.ObjectId(updateEmployeeDto.employee.user);
+    if (!company) {
+      throw new NotFoundException('Company Not Found');
+    }
+    const index = company.employees.findIndex(employee => employee.user.toHexString() === userId.toHexString());
+
+    if (index !== -1) {
+      company.employees[index].roles = updateEmployeeDto.employee.roles;
+    } else {
+      throw new NotFoundException('Company Employee Not Found');
+    }
+    await company.save();
+    return this.companyModel.findById(companyId).populate('employees.user');
+  }
+
+  /**
+   * @param deleteEmployeeDto
+   * @description get company by companyId
+   * @return deleted id
+   */
+  async deleteEmployee(deleteEmployeeDto: DeleteEmployeeDto) {
+    const companyId = Types.ObjectId(deleteEmployeeDto.id);
+    const company = await this.companyModel.findById(companyId);
+    const userId = Types.ObjectId(deleteEmployeeDto.userId);
+
+    if (!company) {
+      throw new NotFoundException('Company Not Found');
+    }
+    const index = company.employees.findIndex(employee => employee.user.toHexString() === userId.toHexString());
+
+    if (index !== -1) {
+      company.employees.splice(index, 1);
+    } else {
+      throw new NotFoundException('Company Employee Not Found');
+    }
+    await company.save();
+    return this.companyModel.findById(companyId).populate('employees.user');
+  }
+
   private async isNameUnique(name: string) {
-    const company = await this.companyModel.findOne({name, verified: true});
+    const company = await this.companyModel.findOne({ name, verified: true });
     if (company) {
       throw new BadRequestException('Company Name must be unique.');
     }

@@ -1,7 +1,16 @@
-import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsNumber, IsUrl, IsBoolean } from 'class-validator';
+import { IsNotEmpty, IsString, IsBoolean } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
-export class CreateJobDto {
+export class UpdateJobDto {
+  // Job id
+  @ApiModelProperty({
+    example: 'job id(string)',
+    description: 'The id of job',
+    format: 'string',
+  })
+  @IsNotEmpty()
+  @IsString()
+  readonly id: string;
 
   // Job Title
   @ApiModelProperty({

@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import * as validator from 'validator';
 
 export const JobSchema = new mongoose.Schema ({
   title: {
@@ -20,6 +19,28 @@ export const JobSchema = new mongoose.Schema ({
     type: String,
   },
   published: {
+    type: Boolean,
+    default: false,
+  },
+  poster: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  views: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  applies: [
+    {
+      candidate: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    },
+  ],
+  autoReNew: {
     type: Boolean,
     default: false,
   },

@@ -7,4 +7,14 @@ export interface Job extends Document {
   description: string;
   howToApply: string;
   published: boolean;
+  poster: Types.ObjectId;
+  views: [Types.ObjectId];
+  applies: [
+    {
+      candidate: {
+        type: Types.ObjectId,
+      },
+    }
+  ];
+  autoReNew: boolean;
 }
