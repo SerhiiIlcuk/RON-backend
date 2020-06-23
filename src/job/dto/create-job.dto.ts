@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsNumber, IsUrl, IsBoolean } from 'class-validator';
+import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsNumber, IsUrl, IsBoolean, IsArray } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateJobDto {
@@ -58,4 +58,22 @@ export class CreateJobDto {
   })
   @IsBoolean()
   readonly published: boolean;
+
+  // Job Category
+  @ApiModelProperty({
+    example: '3034903490',
+    description: 'The job category id',
+    format: 'string',
+  })
+  @IsString()
+  readonly jobCategory: string;
+
+  // Job SubCategories
+  @ApiModelProperty({
+    example: '["sub category 1", "sub category 2"]',
+    description: 'The sub categories according to job category',
+    format: 'array',
+  })
+  @IsArray()
+  readonly jobSubCategories: string[];
 }

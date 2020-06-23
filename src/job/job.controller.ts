@@ -101,4 +101,12 @@ export class JobController {
   async getAllJobLocations() {
     return await this.jobService.getAllJobLocations();
   }
+
+  @Get('job-categories')
+  @ApiOperation({ title: 'Get all job categories' })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({})
+  async getAllJobCategories() {
+    return await this.jobService.getAllJobCategories();
+  }
 }

@@ -18,4 +18,6 @@ export interface Job extends Document {
     }
   ];
   autoReNew: boolean;
+  jobCategory: Types.ObjectId;
+  jobSubCategories: string[];
 }

@@ -8,6 +8,7 @@ import { UpdateJobPublishReNewDto } from './dto/update-job-publish-renew.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { Company } from '../company/interfaces/company.interface';
 import { JobLocation } from '../common/interfaces/job-location.interface';
+import { JobCategory } from '../common/interfaces/job-category.interface';
 
 @Injectable()
 export class JobService {
@@ -15,6 +16,7 @@ export class JobService {
     @InjectModel('Job') private readonly jobModel: Model<Job>,
     @InjectModel('Company') private readonly companyModel: Model<Company>,
     @InjectModel('JobLocation') private readonly jobLocationModel: Model<JobLocation>,
+    @InjectModel('JobCategory') private readonly jobCategoryModel: Model<JobCategory>,
   ) {}
 
   /**
@@ -22,7 +24,10 @@ export class JobService {
    */
   async create(createJobDto: CreateJobDto, userId: Types.ObjectId): Promise<Job> {
     try {
-      const job = new this.jobModel(createJobDto);
+      const job = new this.jobModel();
+      // this is for making string type to object id
+      Object.assign(job, createJobDto);
+      job.jobCategory = Types.ObjectId(createJobDto.jobCategory);
       const company = await this.companyModel.findOne({'employees.user': userId, 'verified': true});
       job.poster = userId;
       job.company = company._id;
@@ -70,7 +75,7 @@ export class JobService {
   async getJob(id: string): Promise<Job> {
     try {
       let job: any;
-      job = await this.jobModel.findById(Types.ObjectId(id));
+      job = await this.jobModel.findById(Types.ObjectId(id)).populate('jobCategory');
       return job;
     } catch (e) {
       throw new InternalServerErrorException('Server database operation error');
@@ -112,6 +117,19 @@ export class JobService {
       let jobLocations: any;
       jobLocations = await this.jobLocationModel.find({});
       return jobLocations;
+    } catch (e) {
+      throw new InternalServerErrorException('Server database operation error');
+    }
+  }
+
+  /**
+   * @description get all job location types
+   */
+  async getAllJobCategories(): Promise<JobCategory[]> {
+    try {
+      let jobCategories: any;
+      jobCategories = await this.jobCategoryModel.find({});
+      return jobCategories;
     } catch (e) {
       throw new InternalServerErrorException('Server database operation error');
     }

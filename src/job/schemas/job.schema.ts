@@ -48,6 +48,15 @@ export const JobSchema = new mongoose.Schema ({
     type: Boolean,
     default: false,
   },
+  jobCategory: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'JobCategory',
+  },
+  jobSubCategories: [
+    {
+      type: String,
+    },
+  ],
 }, {
   versionKey: false,
   timestamps: true,
