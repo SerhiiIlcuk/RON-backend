@@ -2,7 +2,6 @@ import { Document, Types } from 'mongoose';
 
 export interface Job extends Document {
   title: string;
-  location: string;
   summary: string;
   description: string;
   howToApply: string;
@@ -18,6 +17,8 @@ export interface Job extends Document {
     }
   ];
   autoReNew: boolean;
+  experienceLevel: string;
+  jobLocation: Types.ObjectId;
   jobCategory: Types.ObjectId;
   jobSubCategories: string[];
 }

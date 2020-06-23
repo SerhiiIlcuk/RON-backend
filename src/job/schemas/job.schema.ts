@@ -5,10 +5,6 @@ export const JobSchema = new mongoose.Schema ({
     type: String,
     required: [true, 'TITLE_IS_BLANK'],
   },
-  location: {
-    type: String,
-    required: [true, 'LOCATION_IS_BLANK'],
-  },
   summary: {
     type: String,
   },
@@ -47,6 +43,13 @@ export const JobSchema = new mongoose.Schema ({
   autoReNew: {
     type: Boolean,
     default: false,
+  },
+  experienceLevel: {
+    type: String,
+  },
+  jobLocation: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'JobLocation',
   },
   jobCategory: {
     type: mongoose.Schema.Types.ObjectId,

@@ -22,16 +22,6 @@ export class UpdateJobDto {
   @IsString()
   readonly title: string;
 
-  // Job Location
-  @ApiModelProperty({
-    example: 'San Fransisco',
-    description: 'The location of candidate',
-    format: 'string',
-  })
-  @IsNotEmpty()
-  @IsString()
-  readonly location: string;
-
   // Summary
   @ApiModelProperty({
     example: 'Html, React, Scss',
@@ -67,6 +57,24 @@ export class UpdateJobDto {
   })
   @IsBoolean()
   readonly published: boolean;
+
+  // Experience Level
+  @ApiModelProperty({
+    example: '1',
+    description: 'The id of experience level',
+    format: 'string',
+  })
+  @IsString()
+  readonly experienceLevel: string;
+
+  // Job Location
+  @ApiModelProperty({
+    example: '3034903490',
+    description: 'The job location id',
+    format: 'string',
+  })
+  @IsString()
+  readonly jobLocation: string;
 
   // Job Category
   @ApiModelProperty({
