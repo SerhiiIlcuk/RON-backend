@@ -57,14 +57,21 @@ export const UserSchema = new mongoose.Schema ({
         type: String,
         validate: validator.isURL,
     },
-    skills: {
-        type: [String],
-    },
-    jobLocations: {
-        type: [String],
-    },
-    roles: {
-        type: [String],
+    skills: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Skill',
+        },
+    ],
+    jobLocations: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'JobLocation',
+        },
+    ],
+    profession: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Profession',
     },
     verification: {
         type: String,

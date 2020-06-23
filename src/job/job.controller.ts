@@ -93,4 +93,12 @@ export class JobController {
   async updatePublishReNew(@Body() updateJobPublishReNewDto: UpdateJobPublishReNewDto) {
     return await this.jobService.updateJobPublishReNew(updateJobPublishReNewDto);
   }
+
+  @Get('job-locations')
+  @ApiOperation({ title: 'Get all job location types' })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({})
+  async getAllJobLocations() {
+    return await this.jobService.getAllJobLocations();
+  }
 }

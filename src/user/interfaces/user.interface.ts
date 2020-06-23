@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export interface User extends Document {
     firstName: string;
@@ -13,9 +13,13 @@ export interface User extends Document {
     dribbleUrl: string;
     githubUrl: string;
     kaggleUrl: string;
-    skills: [string];
-    jobLocations: [string];
-    roles: [string];
+    skills: [
+      Types.ObjectId
+    ];
+    jobLocations: [
+      Types.ObjectId
+    ];
+    profession: Types.ObjectId;
     verification: string;
     verified: boolean;
     verificationExpires: Date;

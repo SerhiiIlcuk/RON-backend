@@ -56,7 +56,7 @@ export class UpdateUserDto {
   @IsString()
   readonly resumeLink: string;
 
-  // resume path
+  // why are you here
   @ApiModelProperty({
     example: '[0, 2]',
     description: 'array of index of reasons that why you are here',
@@ -115,4 +115,34 @@ export class UpdateUserDto {
   @IsString()
   @IsUrl()
   readonly kaggleUrl: string;
+
+  // profession
+  @ApiModelProperty({
+    example: '"123323234"',
+    description: 'profession of user',
+    format: 'string',
+  })
+  @IsString()
+  @IsNotEmpty()
+  readonly profession: string;
+
+  // skills
+  @ApiModelProperty({
+    example: '["123323234", "89893434"]',
+    description: 'skills of user',
+    format: 'array',
+  })
+  @IsArray()
+  @IsNotEmpty()
+  readonly skills: string[];
+
+  // job locations
+  @ApiModelProperty({
+    example: '["123323234", "454545454"]',
+    description: 'job locations of user',
+    format: 'array',
+  })
+  @IsArray()
+  @IsNotEmpty()
+  readonly jobLocations: string[];
 }

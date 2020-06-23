@@ -125,6 +125,22 @@ export class UserController {
     return await this.userService.updateUser(user.id, updateUserDto);
   }
 
+  @Get('skills')
+  @ApiOperation({ title: 'Get All Skills' })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({})
+  async getAllSkills() {
+    return await this.userService.getAllSkills();
+  }
+
+  @Get('professions')
+  @ApiOperation({ title: 'Get All Professions' })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({})
+  async getAllProfessions() {
+    return await this.userService.getAllProfessions();
+  }
+
   @Get('data')
   @UseGuards(AuthGuard('jwt'))
   @Roles('admin')

@@ -7,12 +7,14 @@ import {log} from 'console';
 import { UpdateJobPublishReNewDto } from './dto/update-job-publish-renew.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { Company } from '../company/interfaces/company.interface';
+import { JobLocation } from '../common/interfaces/job-location.interface';
 
 @Injectable()
 export class JobService {
   constructor(
     @InjectModel('Job') private readonly jobModel: Model<Job>,
     @InjectModel('Company') private readonly companyModel: Model<Company>,
+    @InjectModel('JobLocation') private readonly jobLocationModel: Model<JobLocation>,
   ) {}
 
   /**
@@ -97,6 +99,19 @@ export class JobService {
     try {
       await this.jobModel.updateOne({ _id: id }, updatedJob);
       return updatedJob;
+    } catch (e) {
+      throw new InternalServerErrorException('Server database operation error');
+    }
+  }
+
+  /**
+   * @description get all job location types
+   */
+  async getAllJobLocations(): Promise<JobLocation[]> {
+    try {
+      let jobLocations: any;
+      jobLocations = await this.jobLocationModel.find({});
+      return jobLocations;
     } catch (e) {
       throw new InternalServerErrorException('Server database operation error');
     }

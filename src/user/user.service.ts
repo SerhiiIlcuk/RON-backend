@@ -187,6 +187,34 @@ export class UserService {
         }
     }
 
+    /**
+     * @description get all skill types
+     */
+    async getAllSkills(): Promise<Skill[]> {
+        try {
+            let skills: any;
+            skills = await this.skillModel.find({});
+            return skills;
+        } catch (e) {
+            log(e);
+            throw new InternalServerErrorException('Server Error');
+        }
+    }
+
+    /**
+     * @description get all profession types
+     */
+    async getAllProfessions(): Promise<Profession[]> {
+        try {
+            let professions: any;
+            professions = await this.professionModel.find({});
+            return professions;
+        } catch (e) {
+            log(e);
+            throw new InternalServerErrorException('Server Error');
+        }
+    }
+
     // ┌─┐┬─┐┌┬┐┌─┐┌─┐┌┬┐┌─┐┌┬┐  ┌─┐┌─┐┬─┐┬  ┬┬┌─┐┌─┐
     // ├─┘├┬┘ │ ├┤ │   │ ├┤  ││  └─┐├┤ ├┬┘└┐┌┘││  ├┤
     // ┴  ┴└─ ┴ └─┘└─┘ ┴ └─┘─┴┘  └─┘└─┘┴└─ └┘ ┴└─┘└─┘
