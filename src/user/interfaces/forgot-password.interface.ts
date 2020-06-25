@@ -6,9 +6,9 @@ export interface ForgotPassword extends Document {
     firstUsed: boolean;
     finalUsed: boolean;
     expires: Date;
-    ipRequest: string;
-    browserRequest: string;
-    countryRequest: string;
+    ip: string;
+    browser: string;
+    country: string;
     ipChanged: string;
     browserChanged: string;
     countryChanged: string;
