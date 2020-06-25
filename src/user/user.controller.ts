@@ -1,5 +1,3 @@
-import { Roles } from './../auth/decorators/roles.decorator';
-import { UserType } from './../auth/decorators/user-type.decorator';
 import { AuthUser } from '../auth/decorators/user.decorator';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { CreateForgotPasswordDto } from './dto/create-forgot-password.dto';
@@ -20,13 +18,9 @@ import {
   ApiImplicitHeader,
   ApiOperation,
 } from '@nestjs/swagger';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { UserTypeGuard } from 'src/auth/guards/user-type.guard';
 
 @ApiUseTags('User')
 @Controller('user')
-@UseGuards(RolesGuard)
-@UseGuards(UserTypeGuard)
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -143,7 +137,6 @@ export class UserController {
 
   @Get('data')
   @UseGuards(AuthGuard('jwt'))
-  @Roles('admin')
   @ApiBearerAuth()
   @ApiOperation({ title: 'A private route for check the auth' })
   @ApiImplicitHeader({

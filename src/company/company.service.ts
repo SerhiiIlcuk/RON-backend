@@ -22,7 +22,7 @@ export class CompanyService {
   /**
    * @description create company
    */
-  async create(createCompanyDto: CreateCompanyDto, userId: Types.ObjectId): Promise<Company> {
+  async create(createCompanyDto: CreateCompanyDto, userId: string): Promise<Company> {
     const company = new this.companyModel(createCompanyDto);
     await this.isNameUnique(company.name);
     const employee = {
@@ -87,11 +87,14 @@ export class CompanyService {
   async updateEmployee(updateEmployeeDto: UpdateEmployeeDto): Promise<Company> {
     const companyId = Types.ObjectId(updateEmployeeDto.id);
     const company = await this.companyModel.findById(companyId);
-    const userId = Types.ObjectId(updateEmployeeDto.employee.user);
+    const userId = updateEmployeeDto.employee.user;
     if (!company) {
       throw new NotFoundException('Company Not Found');
     }
-    const index = company.employees.findIndex(employee => employee.user.toHexString() === userId.toHexString());
+
+    const index = company.employees.findIndex(employee => {
+      return employee.user.toString() === userId.toString();
+    });
 
     if (index !== -1) {
       company.employees[index].roles = updateEmployeeDto.employee.roles;
@@ -115,7 +118,7 @@ export class CompanyService {
     if (!company) {
       throw new NotFoundException('Company Not Found');
     }
-    const index = company.employees.findIndex(employee => employee.user.toHexString() === userId.toHexString());
+    const index = company.employees.findIndex(employee => employee.user === userId.toHexString());
 
     if (index !== -1) {
       company.employees.splice(index, 1);

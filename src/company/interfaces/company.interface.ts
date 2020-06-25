@@ -2,6 +2,8 @@ import { Document, Types } from 'mongoose';
 
 export interface Company extends Document {
   name: string;
+  logoImg: string;
+  splashImg: string;
   birthYear: string;
   localEmployees: number;
   totalEmployees: number;
@@ -14,12 +16,10 @@ export interface Company extends Document {
   facebookUrl: string;
   instagramUrl: string;
   twitterUrl: string;
-  companyTypes: [
-    Types.ObjectId,
-  ];
-  employees: [{
-    user: Types.ObjectId,
+  companyTypes: string[];
+  employees: Array<{
+    user: string,
     roles: string[],
-  }];
+  }>;
   verified: boolean;
 }

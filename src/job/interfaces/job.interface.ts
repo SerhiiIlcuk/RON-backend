@@ -8,14 +8,12 @@ export interface Job extends Document {
   published: boolean;
   poster: Types.ObjectId;
   company: Types.ObjectId;
-  views: [Types.ObjectId];
-  applies: [
-    {
-      candidate: {
-        type: Types.ObjectId,
-      },
-    }
-  ];
+  views: Types.ObjectId[];
+  applies: Array<{
+    candidate: {
+      type: Types.ObjectId,
+    },
+  }>;
   autoReNew: boolean;
   experienceLevel: string;
   jobLocation: Types.ObjectId;
