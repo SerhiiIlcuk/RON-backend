@@ -314,14 +314,14 @@ export class UserService {
     }
 
     private async saveForgotPassword(req: Request, createForgotPasswordDto: CreateForgotPasswordDto) {
-        const forgotPassword = await this.forgotPasswordModel.create({
-            email: createForgotPasswordDto.email,
-            verification: v4(),
-            expires: addHours(new Date(), this.HOURS_TO_VERIFY),
-            ip: this.authService.getIp(req),
-            browser: this.authService.getBrowserInfo(req),
-            country: this.authService.getCountry(req),
-        });
+        const forgotPassword = new this.forgotPasswordModel();
+        forgotPassword.email = createForgotPasswordDto.email;
+        forgotPassword.verification = v4();
+        forgotPassword.expires = addHours(new Date(), this.HOURS_TO_VERIFY);
+        forgotPassword.ip = this.authService.getIp(req);
+        forgotPassword.browser = this.authService.getBrowserInfo(req);
+        forgotPassword.country = this.authService.getCountry(req);
+
         await forgotPassword.save();
     }
 

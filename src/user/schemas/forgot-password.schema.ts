@@ -10,7 +10,6 @@ export const ForgotPasswordSchema = new Schema ({
     verification: {
         type: String,
         validate: validator.isUUID,
-        requierd: true,
     },
     firstUsed: {
         type: Boolean,
@@ -22,19 +21,15 @@ export const ForgotPasswordSchema = new Schema ({
     },
     expires: {
         type: Date,
-        requierd: true,
     },
     ip: {
         type: String,
-        requierd: true,
     },
     browser: {
         type: String,
-        requierd: true,
     },
     country: {
         type: String,
-        requierd: true,
     },
     ipChanged: {
         type: String,
