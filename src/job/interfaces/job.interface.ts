@@ -10,9 +10,7 @@ export interface Job extends Document {
   company: Types.ObjectId;
   views: Types.ObjectId[];
   applies: Array<{
-    candidate: {
-      type: Types.ObjectId,
-    },
+    candidate: Types.ObjectId,
   }>;
   autoReNew: boolean;
   experienceLevel: string;

@@ -7,6 +7,7 @@ import { AuthUser } from '../auth/decorators/user.decorator';
 import {UpdateJobPublishReNewDto} from './dto/update-job-publish-renew.dto';
 import {log} from 'console';
 import { UpdateJobDto } from './dto/update-job.dto';
+import { ApplyJobDto } from './dto/apply-job.dto';
 
 @ApiUseTags('Job')
 @Controller('job')
@@ -136,6 +137,24 @@ export class JobController {
   @ApiOkResponse({})
   async getAllJobCategories(@Res() res: any) {
     const response = await this.jobService.getAllJobCategories();
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
+  }
+
+  @Post('apply')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ title: 'Apply to the job' })
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiImplicitHeader({
+    name: 'x-token',
+    description: 'the token we need for auth.',
+  })
+  @ApiOkResponse({})
+  async applyToJob(@Body() applyJobDto: ApplyJobDto, @Res() res: any, @AuthUser() user: any) {
+    const response = await this.jobService.applyToJob(applyJobDto, user.id);
     return res.status(HttpStatus.OK).json({
       statusCode: 200,
       response,

@@ -1,14 +1,15 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Job } from './interfaces/job.interface';
 import { Model, Schema, Types } from 'mongoose';
 import { CreateJobDto } from './dto/create-job.dto';
-import {log} from 'console';
+import { log } from 'console';
 import { UpdateJobPublishReNewDto } from './dto/update-job-publish-renew.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { Company } from '../company/interfaces/company.interface';
 import { JobLocation } from '../common/interfaces/job-location.interface';
 import { JobCategory } from '../common/interfaces/job-category.interface';
+import { ApplyJobDto } from './dto/apply-job.dto';
 
 @Injectable()
 export class JobService {
@@ -17,7 +18,8 @@ export class JobService {
     @InjectModel('Company') private readonly companyModel: Model<Company>,
     @InjectModel('JobLocation') private readonly jobLocationModel: Model<JobLocation>,
     @InjectModel('JobCategory') private readonly jobCategoryModel: Model<JobCategory>,
-  ) {}
+  ) {
+  }
 
   /**
    * @description create job
@@ -28,7 +30,7 @@ export class JobService {
       // this is for making string type to object id
       Object.assign(job, createJobDto);
       job.jobCategory = Types.ObjectId(createJobDto.jobCategory);
-      const company = await this.companyModel.findOne({'employees.user': userId, 'verified': true});
+      const company = await this.companyModel.findOne({ 'employees.user': userId, 'verified': true });
       job.poster = userId;
       job.company = company._id;
 
@@ -134,5 +136,24 @@ export class JobService {
     } catch (e) {
       throw new InternalServerErrorException('Server database operation error');
     }
+  }
+
+  /**
+   * @description apply to job
+   */
+  async applyToJob(applyJobDto: ApplyJobDto, userId: Types.ObjectId): Promise<Job> {
+    const job = await this.jobModel.findById(applyJobDto.id).populate('company');
+    if (job.applies && job.applies.length > 0) {
+      // if already applied
+      const index = job.applies.findIndex(apply => apply.candidate.toString() === userId.toString());
+      if (index !== -1) {
+        throw new HttpException('You already applied on this job', HttpStatus.BAD_REQUEST);
+      }
+    }
+    job.applies.push({
+      candidate: userId,
+    });
+    await job.save();
+    return job;
   }
 }
