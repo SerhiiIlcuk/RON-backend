@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Get, Post, Put, Delete, UseGuards, Param } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Get, Post, Put, Delete, UseGuards, Param, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiImplicitHeader, ApiImplicitParam, ApiOkResponse, ApiOperation, ApiUseTags } from '@nestjs/swagger';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
@@ -27,16 +27,24 @@ export class CompanyController {
     description: 'the token we need for auth.',
   })
   @ApiCreatedResponse({})
-  async register(@Body() createCompanyDto: CreateCompanyDto, @AuthUser() user: any) {
-    return await this.companyService.create(createCompanyDto, user.id);
+  async register(@Body() createCompanyDto: CreateCompanyDto, @AuthUser() user: any, @Res() res: any) {
+    const response = await this.companyService.create(createCompanyDto, user.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Get('')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ title: 'Get all companies verified' })
   @ApiOkResponse({})
-  async getAllCompanies() {
-    return await this.companyService.getAllCompanies();
+  async getAllCompanies(@Res() res: any) {
+    const response = await this.companyService.getAllCompanies();
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Put('update/:id')
@@ -50,8 +58,12 @@ export class CompanyController {
     description: 'the token we need for auth.',
   })
   @ApiOkResponse({})
-  async update(@Body() updateCompanyDto: UpdateCompanyDto, @Param() params) {
-    return await this.companyService.updateCompany(updateCompanyDto, params.id);
+  async update(@Body() updateCompanyDto: UpdateCompanyDto, @Param() params, @Res() res: any) {
+    const response = await this.companyService.updateCompany(updateCompanyDto, params.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Get('detail/:id')
@@ -65,8 +77,12 @@ export class CompanyController {
     description: 'the token we need for auth.',
   })
   @ApiOkResponse({})
-  async getCompanyDetails(@Param() params) {
-    return await this.companyService.get(params.id);
+  async getCompanyDetails(@Param() params, @Res() res: any) {
+    const response = await this.companyService.get(params.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Put('employee')
@@ -79,8 +95,12 @@ export class CompanyController {
     description: 'the token we need for auth.',
   })
   @ApiOkResponse({})
-  async updateEmployee(@Body() updateEmployeeDto: UpdateEmployeeDto) {
-    return await this.companyService.updateEmployee(updateEmployeeDto);
+  async updateEmployee(@Body() updateEmployeeDto: UpdateEmployeeDto, @Res() res: any) {
+    const response = await this.companyService.updateEmployee(updateEmployeeDto);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Delete('employee')
@@ -93,15 +113,23 @@ export class CompanyController {
     description: 'the token we need for auth.',
   })
   @ApiOkResponse({})
-  async deleteEmployee(@Body() deleteEmployeeDto: DeleteEmployeeDto) {
-    return await this.companyService.deleteEmployee(deleteEmployeeDto);
+  async deleteEmployee(@Body() deleteEmployeeDto: DeleteEmployeeDto, @Res() res: any) {
+    const response = await this.companyService.deleteEmployee(deleteEmployeeDto);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Get('company-types')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ title: 'Get all company types' })
   @ApiOkResponse({})
-  async getAllCompanyTypes() {
-    return await this.companyService.getAllCompanyTypes();
+  async getAllCompanyTypes(@Res() res: any) {
+    const response = await this.companyService.getAllCompanyTypes();
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 }

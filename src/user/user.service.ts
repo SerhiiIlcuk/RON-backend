@@ -2,7 +2,15 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { Request } from 'express';
 import { AuthService } from './../auth/auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
-import { Injectable, BadRequestException, NotFoundException, ConflictException, InternalServerErrorException, HttpException } from '@nestjs/common';
+import {
+    Injectable,
+    BadRequestException,
+    NotFoundException,
+    ConflictException,
+    InternalServerErrorException,
+    HttpException,
+    HttpStatus,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { v4 } from 'uuid';
@@ -48,7 +56,7 @@ export class UserService {
         try {
             await this.isEmailUnique(user.email);
         } catch (err) {
-            throw new HttpException('Email Unique Check Error', err);
+            throw new HttpException('Email Unique Check Error', HttpStatus.BAD_REQUEST);
         }
         this.setRegistrationInfo(user);
         try {

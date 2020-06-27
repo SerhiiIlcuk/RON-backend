@@ -35,6 +35,7 @@ export class JobService {
       await job.save();
       return job;
     } catch (e) {
+      log(e);
       throw new InternalServerErrorException('Server database operation error');
     }
   }

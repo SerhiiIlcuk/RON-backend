@@ -28,8 +28,12 @@ export class FileUploadController {
     description: 'the token we need for auth.',
   })
   @ApiOkResponse({})
-  async uploadImage(@Body() imageUploadDto: ImageUploadDto) {
-    return await this.fileUploadService.uploadImage(imageUploadDto);
+  async uploadImage(@Body() imageUploadDto: ImageUploadDto, @Res() res: any) {
+    const response = await this.fileUploadService.uploadImage(imageUploadDto);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Post('etc')
@@ -58,6 +62,7 @@ export class FileUploadController {
   }))
   uploadFile(@UploadedFile() file, @Res() res: any) {
     return res.status(HttpStatus.OK).json({
+      statusCode: 200,
       path: file.path,
     });
   }

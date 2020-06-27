@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, HttpCode, HttpStatus, Param, Post, UseGuards, Res } from '@nestjs/common';
 import { JobService } from './job.service';
 import { ApiBearerAuth, ApiCreatedResponse, ApiImplicitHeader, ApiOkResponse, ApiOperation, ApiUseTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
@@ -26,8 +26,12 @@ export class JobController {
     description: 'the token we need for auth.',
   })
   @ApiCreatedResponse({})
-  async create(@Body() createJobDto: CreateJobDto, @AuthUser() user: any) {
-    return await this.jobService.create(createJobDto, user.id);
+  async create(@Body() createJobDto: CreateJobDto, @AuthUser() user: any, @Res() res: any) {
+    const response = await this.jobService.create(createJobDto, user.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Put()
@@ -40,8 +44,12 @@ export class JobController {
     description: 'the token we need for auth.',
   })
   @ApiOkResponse({})
-  async update(@Body() updateJobDto: UpdateJobDto) {
-    return await this.jobService.update(updateJobDto);
+  async update(@Body() updateJobDto: UpdateJobDto, @Res() res: any) {
+    const response = await this.jobService.update(updateJobDto);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Get('detail/:id')
@@ -54,16 +62,24 @@ export class JobController {
   })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({})
-  async getJob(@Param() params) {
-    return await this.jobService.getJob(params.id);
+  async getJob(@Param() params, @Res() res) {
+    const response = await this.jobService.getJob(params.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Get('')
   @ApiOperation({ title: 'Get job by id' })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({})
-  async getAllJobs() {
-    return await this.jobService.getAllJobs();
+  async getAllJobs(@Res() res: any) {
+    const response = await this.jobService.getAllJobs();
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Get('employee')
@@ -76,8 +92,12 @@ export class JobController {
   })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({})
-  async getEmployeeJobs(@AuthUser() user: any) {
-    return await this.jobService.getEmployeeJobs(user.id);
+  async getEmployeeJobs(@AuthUser() user: any, @Res() res: any) {
+    const response = await this.jobService.getEmployeeJobs(user.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Post('update-settings')
@@ -90,23 +110,35 @@ export class JobController {
     description: 'the token we need for auth.',
   })
   @ApiOkResponse({})
-  async updatePublishReNew(@Body() updateJobPublishReNewDto: UpdateJobPublishReNewDto) {
-    return await this.jobService.updateJobPublishReNew(updateJobPublishReNewDto);
+  async updatePublishReNew(@Body() updateJobPublishReNewDto: UpdateJobPublishReNewDto, @Res() res: any) {
+    const response = await this.jobService.updateJobPublishReNew(updateJobPublishReNewDto);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Get('job-locations')
   @ApiOperation({ title: 'Get all job location types' })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({})
-  async getAllJobLocations() {
-    return await this.jobService.getAllJobLocations();
+  async getAllJobLocations(@Res() res: any) {
+    const response = await this.jobService.getAllJobLocations();
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Get('job-categories')
   @ApiOperation({ title: 'Get all job categories' })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({})
-  async getAllJobCategories() {
-    return await this.jobService.getAllJobCategories();
+  async getAllJobCategories(@Res() res: any) {
+    const response = await this.jobService.getAllJobCategories();
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 }

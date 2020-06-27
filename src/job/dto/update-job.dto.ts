@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsBoolean, IsArray } from 'class-validator';
+import { IsNotEmpty, IsString, IsBoolean, IsArray, IsOptional } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class UpdateJobDto {
@@ -38,6 +38,7 @@ export class UpdateJobDto {
     format: 'string',
   })
   @IsString()
+  @IsOptional()
   readonly description: string;
 
   // How to apply
