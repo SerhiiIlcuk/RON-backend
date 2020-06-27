@@ -56,13 +56,13 @@ export class UserService {
         try {
             await this.isEmailUnique(user.email);
         } catch (err) {
-            throw new HttpException('Email Unique Check Error', HttpStatus.BAD_REQUEST);
+            throw new HttpException('Email Already Exist', HttpStatus.BAD_REQUEST);
         }
         this.setRegistrationInfo(user);
         try {
             await user.save();
         } catch (err) {
-            throw new HttpException('User Save Error', err);
+            throw new HttpException('User Save Error', HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return this.buildRegistrationInfo(user);
     }
