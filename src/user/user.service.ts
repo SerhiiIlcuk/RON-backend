@@ -25,10 +25,11 @@ import { ForgotPassword } from './interfaces/forgot-password.interface';
 import { User } from './interfaces/user.interface';
 import {log} from 'console';
 import { Company } from '../company/interfaces/company.interface';
-import {CANDIDATE, EMPLOYEE} from '../common/constants';
+import { ADMIN, CANDIDATE, EMPLOYEE } from '../common/constants';
 import { JobLocation } from '../common/interfaces/job-location.interface';
 import { Profession } from '../common/interfaces/profession.interface';
 import { Skill } from '../common/interfaces/skill.interface';
+import { UpdateAdminDto } from './dto/update-admin.dto';
 
 @Injectable()
 export class UserService {
@@ -180,6 +181,36 @@ export class UserService {
             throw new BadRequestException('Bad request');
         }
         return user;
+    }
+
+    /**
+     * @description used to get all admin users
+     */
+    async getAllAdmins() {
+        return this.userModel.find({
+            userType: ADMIN,
+            verified: true,
+        });
+    }
+
+    /**
+     * @param updateAdminDto
+     * @description used to update user profile
+     */
+    async updateAdmin(updateAdminDto: UpdateAdminDto) {
+        const admin = await this.userModel.findById(updateAdminDto.id);
+        if (!admin) {
+            throw new BadRequestException('Admin not found');
+        }
+
+        const updatedAdmin = Object.assign(admin, updateAdminDto);
+        try {
+            await this.userModel.updateOne({ _id: updateAdminDto.id }, updatedAdmin);
+            return updatedAdmin;
+        } catch (e) {
+            log(e);
+            throw new InternalServerErrorException('Server Error');
+        }
     }
 
     /**

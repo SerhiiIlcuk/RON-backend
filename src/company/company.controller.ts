@@ -7,6 +7,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthUser } from '../auth/decorators/user.decorator';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { DeleteEmployeeDto } from './dto/delete-employee.dto';
+import { AdminCreateCompanyDto } from './dto/admin-create-company.dto';
 
 @ApiUseTags('Company')
 @Controller('company')
@@ -29,6 +30,24 @@ export class CompanyController {
   @ApiCreatedResponse({})
   async register(@Body() createCompanyDto: CreateCompanyDto, @AuthUser() user: any, @Res() res: any) {
     const response = await this.companyService.create(createCompanyDto, user.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
+  }
+
+  @Post('by-admin')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ title: 'Create company By Admin' })
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiImplicitHeader({
+    name: 'x-token',
+    description: 'the token we need for auth.',
+  })
+  @ApiCreatedResponse({})
+  async registerByAdmin(@Body() adminCreateCompanyDto: AdminCreateCompanyDto, @AuthUser() user: any, @Res() res: any) {
+    const response = await this.companyService.createByAdmin(adminCreateCompanyDto);
     return res.status(HttpStatus.OK).json({
       statusCode: 200,
       response,

@@ -9,6 +9,8 @@ import { log } from 'console';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { DeleteEmployeeDto } from './dto/delete-employee.dto';
 import { CompanyType } from './interfaces/company-type.interface';
+import { AdminCreateCompanyDto } from './dto/admin-create-company.dto';
+import { EMPLOYEE } from '../common/constants';
 
 @Injectable()
 export class CompanyService {
@@ -30,6 +32,35 @@ export class CompanyService {
       roles: ['user', 'profile', 'news', 'job'],
     };
     company.employees.push(employee);
+    await company.save();
+    return company;
+  }
+
+  /**
+   * @description admin creates the company
+   */
+  async createByAdmin(adminCreateCompanyDto: AdminCreateCompanyDto): Promise<Company> {
+    const employeeEmail = adminCreateCompanyDto.employeeEmail;
+    const user = await this.userModel.findOne({email: employeeEmail, userType: EMPLOYEE, verified: true});
+
+    if (!user) {
+      throw new BadRequestException('Employee email that you put does not exit');
+    }
+
+    const companies = await this.companyModel.find({'employees.user': user._id, 'verified': true});
+    if (companies && companies.length > 0) {
+      throw new BadRequestException('Employee already belong to other company');
+    }
+
+    const company = new this.companyModel(adminCreateCompanyDto);
+    await this.isNameUnique(company.name);
+    const employee = {
+      user: user._id,
+      roles: ['user', 'profile', 'news', 'job'],
+    };
+    company.employees.push(employee);
+    company.verified = true;
+
     await company.save();
     return company;
   }

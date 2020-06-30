@@ -23,6 +23,9 @@ export const UserSchema = new mongoose.Schema ({
         maxlength: 1024,
         required: [true, 'PASSWORD_IS_BLANK'],
     },
+    roles: {
+        type: [String], // this is for admin roles
+    },
     logoImg: {
         type: String,
     },

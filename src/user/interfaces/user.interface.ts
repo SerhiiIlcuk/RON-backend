@@ -7,6 +7,7 @@ export interface User extends Document {
     password: string;
     whyHere: [string];
     userType: string;
+    roles: [string];
     resumeLink: string;
     linkedInUrl: string;
     twitterUrl: string;

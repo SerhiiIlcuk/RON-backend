@@ -18,6 +18,7 @@ import {
   ApiImplicitHeader,
   ApiOperation,
 } from '@nestjs/swagger';
+import { UpdateAdminDto } from './dto/update-admin.dto';
 
 @ApiUseTags('User')
 @Controller('user')
@@ -131,6 +132,42 @@ export class UserController {
   @ApiOkResponse({})
   async getUser(@AuthUser() user: any, @Res() res: any) {
     const response = await this.userService.getUser(user.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
+  }
+
+  @Get('admin/all')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ title: 'Get all admins' })
+  @ApiImplicitHeader({
+    name: 'x-token',
+    description: 'the token we need for auth.',
+  })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({})
+  async getAllAdmins(@AuthUser() user: any, @Res() res: any) {
+    const response = await this.userService.getAllAdmins();
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
+  }
+
+  @Put('admin/update')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ title: 'update admin roles' })
+  @ApiImplicitHeader({
+    name: 'x-token',
+    description: 'the token we need for auth.',
+  })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({})
+  async updateAdmin(@Body() updateAdminDto: UpdateAdminDto, @AuthUser() user: any, @Res() res: any) {
+    const response = await this.userService.updateAdmin(updateAdminDto);
     return res.status(HttpStatus.OK).json({
       statusCode: 200,
       response,
