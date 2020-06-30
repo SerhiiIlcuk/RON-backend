@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Company } from './interfaces/company.interface';
@@ -41,13 +41,13 @@ export class CompanyService {
    */
   async createByAdmin(adminCreateCompanyDto: AdminCreateCompanyDto): Promise<Company> {
     const employeeEmail = adminCreateCompanyDto.employeeEmail;
-    const user = await this.userModel.findOne({email: employeeEmail, userType: EMPLOYEE, verified: true});
+    const user = await this.userModel.findOne({ email: employeeEmail, userType: EMPLOYEE, verified: true });
 
     if (!user) {
       throw new BadRequestException('Employee email that you put does not exit');
     }
 
-    const companies = await this.companyModel.find({'employees.user': user._id, 'verified': true});
+    const companies = await this.companyModel.find({ 'employees.user': user._id, 'verified': true });
     if (companies && companies.length > 0) {
       throw new BadRequestException('Employee already belong to other company');
     }
@@ -66,9 +66,21 @@ export class CompanyService {
   }
 
   /**
-   * @description get all companies verified
+   * @description get all companies
    */
   async getAllCompanies(): Promise<Company[]> {
+    const companies = await this.companyModel.find();
+
+    if (!companies) {
+      throw new NotFoundException('Companies Not Found');
+    }
+    return companies;
+  }
+
+  /**
+   * @description get companies verified
+   */
+  async getVerifiedCompanies(): Promise<Company[]> {
     const companies = await this.companyModel.find({ verified: true });
 
     if (!companies) {
@@ -169,6 +181,38 @@ export class CompanyService {
     } catch (e) {
       throw new InternalServerErrorException('Server Database Operation error');
     }
+  }
+
+  /**
+   * @description publish company
+   */
+  async publishCompany(companyId: string): Promise<Company> {
+    const company = await this.companyModel.findById(companyId);
+
+    if (!company) {
+      throw new HttpException('Company Not Found', HttpStatus.BAD_REQUEST);
+    }
+
+    company.verified = true;
+    await company.save();
+
+    return company;
+  }
+
+  /**
+   * @description un publish company
+   */
+  async unPublishCompany(companyId: string): Promise<Company> {
+    const company = await this.companyModel.findById(companyId);
+
+    if (!company) {
+      throw new HttpException('Company Not Found', HttpStatus.BAD_REQUEST);
+    }
+
+    company.verified = false;
+    await company.save();
+
+    return company;
   }
 
   private async isNameUnique(name: string) {

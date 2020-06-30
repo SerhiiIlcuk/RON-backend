@@ -56,10 +56,22 @@ export class CompanyController {
 
   @Get('')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ title: 'Get all companies verified' })
+  @ApiOperation({ title: 'Get all companies' })
   @ApiOkResponse({})
   async getAllCompanies(@Res() res: any) {
     const response = await this.companyService.getAllCompanies();
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
+  }
+
+  @Get('/verified')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ title: 'Get verified companies' })
+  @ApiOkResponse({})
+  async getVerifiedCompanies(@Res() res: any) {
+    const response = await this.companyService.getVerifiedCompanies();
     return res.status(HttpStatus.OK).json({
       statusCode: 200,
       response,
@@ -146,6 +158,44 @@ export class CompanyController {
   @ApiOkResponse({})
   async getAllCompanyTypes(@Res() res: any) {
     const response = await this.companyService.getAllCompanyTypes();
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
+  }
+
+  @Post('publish/:id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ title: 'Admin publish the company' })
+  @ApiImplicitParam({name: 'id', description: 'id of company'})
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiImplicitHeader({
+    name: 'x-token',
+    description: 'the token we need for auth.',
+  })
+  @ApiOkResponse({})
+  async publishCompany(@AuthUser() user: any, @Param() params, @Res() res: any) {
+    const response = await this.companyService.publishCompany(params.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
+  }
+
+  @Post('un-publish/:id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ title: 'Admin un-publish the company' })
+  @ApiImplicitParam({name: 'id', description: 'id of company'})
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiImplicitHeader({
+    name: 'x-token',
+    description: 'the token we need for auth.',
+  })
+  @ApiOkResponse({})
+  async unPublishCompany(@AuthUser() user: any, @Param() params, @Res() res: any) {
+    const response = await this.companyService.unPublishCompany(params.id);
     return res.status(HttpStatus.OK).json({
       statusCode: 200,
       response,
