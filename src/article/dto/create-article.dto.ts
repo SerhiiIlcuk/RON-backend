@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString } from 'class-validator';
+import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, IsBoolean } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateArticleDto {
@@ -16,11 +16,38 @@ export class CreateArticleDto {
     readonly title: string;
 
     @ApiModelProperty({
+        example: 'category e.g. Siete',
+        description: 'Category of the article',
+        format: 'string',
+    })
+    @IsNotEmpty()
+    @IsString()
+    readonly category: string;
+
+    @ApiModelProperty({
+        example: 'status e.g. draft or publish',
+        description: 'Status of the article',
+        format: 'string',
+    })
+    @IsNotEmpty()
+    @IsString()
+    readonly status: string;
+
+    @ApiModelProperty({
+        example: 'feature status of article',
+        description: 'feature status of the article',
+        format: 'boolean',
+    })
+    @IsNotEmpty()
+    @IsBoolean()
+    readonly featured: boolean;
+
+    @ApiModelProperty({
         example: 'Body example ...',
         description: 'Main part of article',
         format: 'string',
     })
     @IsNotEmpty()
     @IsString()
-    readonly body: string;
+    readonly content: string;
 }

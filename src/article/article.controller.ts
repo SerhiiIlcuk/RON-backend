@@ -43,7 +43,7 @@ export class ArticleController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @UseGuards(AuthGuard('jwt'))
-    @Roles('admin')
+    // @Roles('admin')
     @ApiOperation({title: 'Create one article'})
     @ApiBearerAuth()
     @ApiImplicitHeader({
@@ -58,7 +58,7 @@ export class ArticleController {
     @Put(':id')
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthGuard('jwt'))
-    @Roles('admin')
+    // @Roles('admin')
     @ApiOperation({title: 'Update one article by id ( all params )'})
     @ApiBearerAuth()
     @ApiImplicitParam({name: 'id', description: 'id of article'})
@@ -74,7 +74,7 @@ export class ArticleController {
     @Delete(':id')
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthGuard('jwt'))
-    @Roles('admin')
+    // @Roles('admin')
     @ApiOperation({title: 'Delete one article'})
     @ApiBearerAuth()
     @ApiImplicitHeader({
