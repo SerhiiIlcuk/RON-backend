@@ -41,8 +41,12 @@ export class ArticleController {
   @ApiOperation({ title: 'Get One article' })
   @ApiImplicitParam({ name: 'id', description: 'id of article' })
   @ApiOkResponse({})
-  async getOneArticles(@Param() params) {
-    return await this.articleService.getOneArticle(params.id);
+  async getOneArticle(@Param() params, @Res() res: any) {
+    const response = await this.articleService.getOneArticle(params.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Post()
@@ -76,8 +80,12 @@ export class ArticleController {
     description: 'the token we need for auth.',
   })
   @ApiOkResponse({})
-  async updateWithAllParams(@Param() params, @Body() createArticleDto: CreateArticleDto) {
-    return await this.articleService.updateArticlePut(params.id, createArticleDto);
+  async updateWithAllParams(@Param() params, @Body() createArticleDto: CreateArticleDto, @Res() res: any) {
+    const response = await this.articleService.updateArticlePut(params.id, createArticleDto);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
   }
 
   @Delete(':id')
@@ -93,6 +101,10 @@ export class ArticleController {
   @ApiImplicitParam({ name: 'id', description: 'id of article we want to delete.' })
   @ApiOkResponse({})
   async deleteOneArticle(@Param() params) {
-    return await this.articleService.deleteArticle(params.id);
+    const response = await this.articleService.deleteArticle(params.id);
+    return {
+      statusCode: 200,
+      response,
+    };
   }
 }
