@@ -72,7 +72,7 @@ export class JobController {
   }
 
   @Get('')
-  @ApiOperation({ title: 'Get job by id' })
+  @ApiOperation({ title: 'Get all jobs' })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({})
   async getAllJobs(@Res() res: any) {
