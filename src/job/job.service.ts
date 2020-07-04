@@ -78,7 +78,10 @@ export class JobService {
   async getJob(id: string): Promise<Job> {
     try {
       let job: any;
-      job = await this.jobModel.findById(Types.ObjectId(id)).populate('jobCategory');
+      job = await this.jobModel.findById(Types.ObjectId(id))
+        .populate('jobCategory')
+        .populate('company')
+        .populate('jobLocation');
       return job;
     } catch (e) {
       throw new InternalServerErrorException('Server database operation error');
