@@ -54,13 +54,13 @@ export class JobController {
   }
 
   @Get('detail/:id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
+  // @UseGuards(AuthGuard('jwt'))
+  // @ApiBearerAuth()
   @ApiOperation({ title: 'Get job by id' })
-  @ApiImplicitHeader({
-    name: 'x-token',
-    description: 'the token we need for auth.',
-  })
+  // @ApiImplicitHeader({
+  //   name: 'x-token',
+  //   description: 'the token we need for auth.',
+  // })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({})
   async getJob(@Param() params, @Res() res) {
@@ -72,11 +72,11 @@ export class JobController {
   }
 
   @Get('')
-  @ApiOperation({ title: 'Get all jobs' })
+  @ApiOperation({ title: 'Get all published jobs' })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({})
-  async getAllJobs(@Res() res: any) {
-    const response = await this.jobService.getAllJobs();
+  async getAllPublishedJobs(@Res() res: any) {
+    const response = await this.jobService.getAllPublishedJobs();
     return res.status(HttpStatus.OK).json({
       statusCode: 200,
       response,
@@ -95,6 +95,24 @@ export class JobController {
   @ApiOkResponse({})
   async getEmployeeJobs(@AuthUser() user: any, @Res() res: any) {
     const response = await this.jobService.getEmployeeJobs(user.id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
+  }
+
+  @Get('company/:id')
+  // @UseGuards(AuthGuard('jwt'))
+  // @ApiBearerAuth()
+  @ApiOperation({ title: 'Get jobs created by company' })
+  // @ApiImplicitHeader({
+  //   name: 'x-token',
+  //   description: 'the token we need for auth.',
+  // })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({})
+  async getCompanyJobs(@Param() param: any, @Res() res: any) {
+    const response = await this.jobService.getCompanyJobs(param.id);
     return res.status(HttpStatus.OK).json({
       statusCode: 200,
       response,

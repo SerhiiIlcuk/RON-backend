@@ -61,7 +61,7 @@ export class JobService {
   /**
    * @description get all jobs
    */
-  async getAllJobs(): Promise<Job[]> {
+  async getAllPublishedJobs(): Promise<Job[]> {
     try {
       let jobs: any;
       jobs = await this.jobModel.find({ published: true }).populate('company');
@@ -96,6 +96,20 @@ export class JobService {
     try {
       let jobs: any;
       jobs = await this.jobModel.find({ poster: userId });
+      return jobs;
+    } catch (e) {
+      throw new InternalServerErrorException('Server database operation error');
+    }
+  }
+
+  /**
+   * @description get the jobs created by company
+   * @param companyId
+   */
+  async getCompanyJobs(companyId: Types.ObjectId) {
+    try {
+      let jobs: any;
+      jobs = await this.jobModel.find({ company: companyId }).populate('jobLocation');
       return jobs;
     } catch (e) {
       throw new InternalServerErrorException('Server database operation error');
