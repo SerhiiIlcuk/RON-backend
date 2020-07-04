@@ -11,6 +11,7 @@ import { DeleteEmployeeDto } from './dto/delete-employee.dto';
 import { CompanyType } from './interfaces/company-type.interface';
 import { AdminCreateCompanyDto } from './dto/admin-create-company.dto';
 import { EMPLOYEE } from '../common/constants';
+import { AddEmployeeDto } from './dto/add-employee.dto';
 
 @Injectable()
 export class CompanyService {
@@ -122,6 +123,43 @@ export class CompanyService {
     return company;
   }
 
+  async addEmployee(addEmployeeDto: AddEmployeeDto): Promise<any> {
+    const companyId = addEmployeeDto.companyId;
+    const company = await this.companyModel.findById(companyId);
+
+    if (!company) {
+      throw new NotFoundException('Company Not Found');
+    }
+
+    const user = await this.userModel.findOne({
+      email: addEmployeeDto.email,
+    });
+
+    if (!user) {
+      throw new NotFoundException('User does not exist');
+    }
+
+    if (user.userType !== EMPLOYEE) {
+      throw new BadRequestException('User is not employee');
+    }
+
+    const companies = await this.companyModel.find({
+      'employees.user': user._id,
+    });
+
+    if (companies && companies.length > 0) {
+      throw new BadRequestException('User already employee to other company');
+    }
+
+    company.employees.push({
+      user: user._id,
+      roles: addEmployeeDto.roles,
+    });
+
+    await company.save();
+    return this.companyModel.findById(companyId).populate('employees.user');
+  }
+
   /**
    * @param updateEmployeeDto
    * @description get company by companyId
@@ -161,7 +199,7 @@ export class CompanyService {
     if (!company) {
       throw new NotFoundException('Company Not Found');
     }
-    const index = company.employees.findIndex(employee => employee.user === userId.toHexString());
+    const index = company.employees.findIndex(employee => employee.user.toString() === userId.toString());
 
     if (index !== -1) {
       company.employees.splice(index, 1);

@@ -54,13 +54,7 @@ export class JobController {
   }
 
   @Get('detail/:id')
-  // @UseGuards(AuthGuard('jwt'))
-  // @ApiBearerAuth()
   @ApiOperation({ title: 'Get job by id' })
-  // @ApiImplicitHeader({
-  //   name: 'x-token',
-  //   description: 'the token we need for auth.',
-  // })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({})
   async getJob(@Param() params, @Res() res) {
@@ -102,13 +96,7 @@ export class JobController {
   }
 
   @Get('company/:id')
-  // @UseGuards(AuthGuard('jwt'))
-  // @ApiBearerAuth()
   @ApiOperation({ title: 'Get jobs created by company' })
-  // @ApiImplicitHeader({
-  //   name: 'x-token',
-  //   description: 'the token we need for auth.',
-  // })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({})
   async getCompanyJobs(@Param() param: any, @Res() res: any) {
