@@ -5,9 +5,9 @@ export interface User extends Document {
     lastName: string;
     email: string;
     password: string;
-    whyHere: [string];
+    whyHere: string[];
     userType: string;
-    roles: [string];
+    roles: string[];
     resumeLink: string;
     linkedInUrl: string;
     twitterUrl: string;

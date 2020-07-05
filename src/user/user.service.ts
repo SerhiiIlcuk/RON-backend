@@ -25,11 +25,12 @@ import { ForgotPassword } from './interfaces/forgot-password.interface';
 import { User } from './interfaces/user.interface';
 import {log} from 'console';
 import { Company } from '../company/interfaces/company.interface';
-import { ADMIN, CANDIDATE, EMPLOYEE } from '../common/constants';
+import { ADMIN, ADMIN_DEFAULT_PASSWORD, CANDIDATE, EMPLOYEE } from '../common/constants';
 import { JobLocation } from '../common/interfaces/job-location.interface';
 import { Profession } from '../common/interfaces/profession.interface';
 import { Skill } from '../common/interfaces/skill.interface';
 import { UpdateAdminDto } from './dto/update-admin.dto';
+import { AddAdminDto } from './dto/add-admin.dto';
 
 @Injectable()
 export class UserService {
@@ -210,6 +211,30 @@ export class UserService {
         } catch (e) {
             log(e);
             throw new InternalServerErrorException('Server Error');
+        }
+    }
+
+    async addAdmin(addAdminDto: AddAdminDto) {
+        // const user = new this.userModel(createUserDto);
+        try {
+            await this.isEmailUnique(addAdminDto.email);
+        } catch (err) {
+            throw new HttpException('Email Already Exist', HttpStatus.BAD_REQUEST);
+        }
+        // this.setRegistrationInfo(user);
+        try {
+            const entity = {
+                ...addAdminDto,
+                verified: true,
+                userType: ADMIN,
+                password: ADMIN_DEFAULT_PASSWORD,
+            };
+            const user = new this.userModel(entity);
+            await user.save();
+
+            return user;
+        } catch (err) {
+            throw new HttpException('User Save Error', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

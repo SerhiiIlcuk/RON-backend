@@ -19,6 +19,7 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { UpdateAdminDto } from './dto/update-admin.dto';
+import { AddAdminDto } from './dto/add-admin.dto';
 
 @ApiUseTags('User')
 @Controller('user')
@@ -168,6 +169,24 @@ export class UserController {
   @ApiOkResponse({})
   async updateAdmin(@Body() updateAdminDto: UpdateAdminDto, @AuthUser() user: any, @Res() res: any) {
     const response = await this.userService.updateAdmin(updateAdminDto);
+    return res.status(HttpStatus.OK).json({
+      statusCode: 200,
+      response,
+    });
+  }
+
+  @Post('admin/add')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ title: 'add admin roles' })
+  @ApiImplicitHeader({
+    name: 'x-token',
+    description: 'the token we need for auth.',
+  })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({})
+  async addAdmin(@Body() addAdminDto: AddAdminDto, @AuthUser() user: any, @Res() res: any) {
+    const response = await this.userService.addAdmin(addAdminDto);
     return res.status(HttpStatus.OK).json({
       statusCode: 200,
       response,
